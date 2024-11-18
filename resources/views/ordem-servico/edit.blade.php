@@ -17,10 +17,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Início</a>
+                        <a class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('ordem-servico.index') }}">Ordens de Serviço</a>
+                        <a class="nav-link {{ Request::routeIs('ordem-servico.index') ? 'active' : '' }}" href="{{ route('ordem-servico.index') }}">Ordens de Serviço</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Clientes</a>
@@ -29,8 +29,12 @@
                         <a class="nav-link" href="#">Configurações</a>
                     </li>
                 </ul>
-                <div>
-                    <a href="#" class="btn btn-outline-light btn-sm">Logout</a>
+                <div class="d-flex align-items-center">
+                    <span class="text-white me-3">Bem-vindo, {{ Auth::user()->name ?? 'Usuário' }}!</span>
+                    <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -38,7 +42,7 @@
 
     <!-- Formulário de Edição -->
     <div class="container mt-5">
-        <h1>Editar Ordem de Serviço #{{ $ordem->id }}</h1>
+        <h1 class="mb-4">Editar Ordem de Serviço {{ $ordem->id }}</h1>
 
         <!-- Exibe mensagens de erro -->
         @if ($errors->any())
@@ -81,13 +85,13 @@
 
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição do Serviço</label>
-                <textarea name="descricao" class="form-control" id="descricao" rows="4">{{ old('descricao', $ordem->descricao) }}</textarea>
+                <textarea name="descricao" class="form-control" id="descricao" rows="4" required>{{ old('descricao', $ordem->descricao) }}</textarea>
             </div>
 
-            <button type="submit" class="btn btn-success">Atualizar</button>
-            <a href="{{ route('dashboard') }}" class="btn btn-warning">Voltar</a>
-            
-          
+            <div class="d-flex justify-content-between">
+                <a href="{{ route('ordem-servico.index') }}" class="btn btn-primary">Voltar</a>
+                <button type="submit" class="btn btn-success">Atualizar</button>
+            </div>
         </form>
     </div>
 

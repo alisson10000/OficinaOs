@@ -9,7 +9,7 @@
 <body>
     <!-- Cabeçalho responsivo -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="#">Oficina</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -17,28 +17,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('dashboard') }}">Início</a>
+                        <a class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('ordem-servico.index') }}">Ordens de Serviço</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Configurações</a>
+                        <a class="nav-link {{ Request::routeIs('ordem-servico.index') ? 'active' : '' }}" href="{{ route('ordem-servico.index') }}">Ordens de Serviço</a>
                     </li>
                 </ul>
-                <div>
-                    <a href="#" class="btn btn-outline-light btn-sm">Logout</a>
+                <!-- Nome do usuário e botão de logout -->
+                <div class="d-flex align-items-center">
+                    <span class="text-white me-3">Bem-vindo, {{ Auth::user()->name }}!</span>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Formulário de Cadastro de Ordem de Serviço -->
-    <div class="container mt-5">
-        <h1>Nova Ordem de Serviço</h1>
+    <!-- Conteúdo principal -->
+    <div class="container-fluid mt-5 px-3 px-md-5">
+        <h1 class="mb-4">Nova Ordem de Serviço</h1>
         
         <!-- Exibe mensagens de erro -->
         @if ($errors->any())

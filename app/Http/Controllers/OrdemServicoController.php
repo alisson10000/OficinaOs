@@ -7,10 +7,7 @@ use App\Models\OrdemServico;
 
 class OrdemServicoController extends Controller
 {
-
-
-
-
+   
 
     // Método para exibir o formulário de criação
     public function create()
@@ -93,20 +90,6 @@ class OrdemServicoController extends Controller
         return redirect()->route('dashboard')->with('success', 'Ordem de serviço atualizada com sucesso.');
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Excluir uma ordem de serviço.
      *
@@ -121,4 +104,24 @@ class OrdemServicoController extends Controller
         // Redireciona para a rota 'dashboard' com uma mensagem de sucesso
         return redirect()->route('dashboard')->with('success', 'Ordem de serviço excluída com sucesso.');
     }
+
+
+
+
+
+    public function index(Request $request)
+{
+    $query = OrdemServico::query();
+
+    if ($request->filled('search')) {
+        $query->where('cliente', 'like', '%' . $request->search . '%');
+    }
+
+    $ordensServico = $query->paginate(10);
+
+    return view('dashboard', compact('ordensServico'));
+}
+
+
+
 }

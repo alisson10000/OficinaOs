@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\OrdemServico; // Importe o model aqui
 use Illuminate\Http\Request;
+use App\Models\OrdemServico;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Buscar todas as ordens de serviço do banco de dados
-        $ordensServico = OrdemServico::all();
+        // Buscar as ordens de serviço com paginação (10 por página)
+        $ordensServico = OrdemServico::paginate(10);
 
-        // Passar as ordens de serviço para a view 'dashboard'
+        // Retornar a view com as ordens paginadas
         return view('dashboard', compact('ordensServico'));
     }
 }
