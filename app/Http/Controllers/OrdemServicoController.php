@@ -2,126 +2,106 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\OrdemServico;
+use App\Models\Cliente;
+use Illuminate\Http\Request;
 
 class OrdemServicoController extends Controller
 {
-   
-
-    // Método para exibir o formulário de criação
-    public function create()
+    /**
+     * 🧾 Lista ordens de serviço com busca por nome do cliente.
+     */
+    public function listar(Request $request)
     {
-        return view('ordem-servico.create');
-    }
+        $busca = $request->input('busca');
 
-    // Método para salvar a nova ordem de serviço no banco
-    public function store(Request $request)
-    {
-        // Validação dos dados
-        $request->validate([
-            'cliente' => 'required|string|max:255',
-            'veiculo' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-            'data_criacao' => 'required|date',
-            'descricao' => 'nullable|string', // Validação para o campo descrição
-        ]);
+        $ordens = OrdemServico::with('cliente')
+            ->when($busca, function ($query, $busca) {
+                $query->whereHas('cliente', function ($q) use ($busca) {
+                    $q->where('nome', 'like', "%{$busca}%");
+                });
+            })
+            ->orderBy('data_entrada', 'desc')
+            ->get();
 
-
-        // Criação da ordem de serviço
-        OrdemServico::create([
-            'cliente' => $request->cliente,
-            'veiculo' => $request->veiculo,
-            'status' => $request->status,
-            'data_criacao' => $request->data_criacao,
-            'descricao' => $request->descricao, // Adiciona o campo descrição
-        ]);
-
-
-        // Redirecionar para a dashboard ou uma página de confirmação
-        return redirect()->route('dashboard')->with('success', 'Ordem de Serviço criada com sucesso!');
-    }
-
-
-    public function show($id)
-    {
-        // Busca a ordem de serviço pelo ID
-        $ordem = OrdemServico::findOrFail($id);
-
-        // Retorna a view com os dados da ordem de serviço
-        return view('ordem-servico.show', compact('ordem'));
-    }
-
-
-
-
-
-    public function edit($id)
-    {
-        // Busca a ordem de serviço pelo ID
-        $ordem = OrdemServico::findOrFail($id);
-
-        // Retorna a view com os dados da ordem de serviço para edição
-        return view('ordem-servico.edit', compact('ordem'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        // Valida os dados recebidos
-        $request->validate([
-            'cliente' => 'required|string|max:255',
-            'veiculo' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-            'data_criacao' => 'required|date',
-            'descricao' => 'nullable|string',
-        ]);
-
-        // Busca a ordem de serviço e atualiza os dados
-        $ordem = OrdemServico::findOrFail($id);
-        $ordem->update([
-            'cliente' => $request->cliente,
-            'veiculo' => $request->veiculo,
-            'status' => $request->status,
-            'data_criacao' => $request->data_criacao,
-            'descricao' => $request->descricao,
-        ]);
-
-        // Redireciona para a lista com uma mensagem de sucesso
-        return redirect()->route('dashboard')->with('success', 'Ordem de serviço atualizada com sucesso.');
+        return view('ordens.listar', compact('ordens', 'busca'));
     }
 
     /**
-     * Excluir uma ordem de serviço.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * ➕ Formulário de criação de OS.
      */
-    public function destroy($id)
+    public function criar()
+    {
+        $clientes = Cliente::orderBy('nome')->get();
+        return view('ordens.criar', compact('clientes'));
+    }
+
+    /**
+     * 💾 Armazena nova OS.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'cliente_id' => 'required|exists:clientes,id',
+            'data_entrada' => 'required|date',
+            'descricao_servico' => 'required|string',
+            'status' => 'nullable|string',
+            'data_saida' => 'nullable|date|after_or_equal:data_entrada',
+            'valor_total' => 'nullable|numeric',
+            'observacoes' => 'nullable|string',
+        ]);
+
+        OrdemServico::create($request->all());
+
+        return redirect()->route('ordens.listar')->with('success', '✅ Ordem de serviço criada com sucesso!');
+    }
+
+    /**
+     * ✏️ Formulário de edição de OS.
+     */
+    public function editar($id)
+    {
+        $ordem = OrdemServico::findOrFail($id);
+        $clientes = Cliente::orderBy('nome')->get();
+
+        return view('ordens.editar_form', compact('ordem', 'clientes'));
+    }
+
+    /**
+     * 🔁 Atualiza OS.
+     */
+    public function atualizar(Request $request, $id)
+    {
+        $ordem = OrdemServico::findOrFail($id);
+
+        $request->validate([
+            'cliente_id' => 'required|exists:clientes,id',
+            'data_entrada' => 'required|date',
+            'descricao_servico' => 'required|string',
+            'status' => 'nullable|string',
+            'data_saida' => 'nullable|date|after_or_equal:data_entrada',
+            'valor_total' => 'nullable|numeric',
+            'observacoes' => 'nullable|string',
+        ]);
+
+        $ordem->update($request->all());
+
+        return redirect()->route('ordens.listar')->with('success', '✏️ Ordem de serviço atualizada com sucesso!');
+    }
+
+    /**
+     * ❌ Exclui OS.
+     */
+    public function deletar($id)
     {
         $ordem = OrdemServico::findOrFail($id);
         $ordem->delete();
 
-        // Redireciona para a rota 'dashboard' com uma mensagem de sucesso
-        return redirect()->route('dashboard')->with('success', 'Ordem de serviço excluída com sucesso.');
+        return redirect()->route('ordens.listar')->with('success', '🗑️ Ordem de serviço excluída com sucesso!');
     }
-
-
-
-
-
-    public function index(Request $request)
-{
-    $query = OrdemServico::query();
-
-    if ($request->filled('search')) {
-        $query->where('cliente', 'like', '%' . $request->search . '%');
+    public function show($id)
+    {
+        $ordem = OrdemServico::with('cliente')->findOrFail($id);
+        return view('ordens.show', compact('ordem'));
     }
-
-    $ordensServico = $query->paginate(10);
-
-    return view('dashboard', compact('ordensServico'));
-}
-
-
-
 }

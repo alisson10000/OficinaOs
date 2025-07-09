@@ -1,22 +1,28 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
 class OrdemServico extends Model
 {
-
     use HasFactory;
 
-    protected $table = 'ordens_servico'; // Nome da tabela no banco de dados
+    protected $table = 'ordens_servico';
 
     protected $fillable = [
-        'cliente',
-        'veiculo',
+        'cliente_id',
+        'data_entrada',
+        'data_saida',
         'status',
-        'data_criacao',
-        'descricao'
+        'descricao_servico',
+        'valor_total',
+        'observacoes',
     ];
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class);
+    }
 }

@@ -1,0 +1,116 @@
+/* Estilo para a tela de listagem de ordens de serviço */
+
+.container {
+    margin-top: 250px;
+    padding: 2rem;
+    max-width:auto    ;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.container h2 {
+    color: #004080;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #004080;
+    padding-bottom: 0.5rem;
+}
+
+.success-message {
+    color: green;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.busca-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.busca-form input {
+    padding: 0.5rem 0.75rem;
+    width: 250px;
+    background-color: white;
+    color: #004080;
+    border: 2px solid #004080;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.busca-form button {
+    padding: 0.5rem 1rem;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.busca-form button:hover {
+    background-color: #002f5f;
+}
+
+.nova-os-btn {
+    background-color: #004080;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.nova-os-btn:hover {
+    background-color: #002f5f;
+}
+
+.ordens-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.ordens-table th {
+    background-color: #004080;
+    color: white;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.ordens-table td {
+    padding: 0.75rem;
+    border-top: 1px solid #ccc;
+}
+
+.acoes {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.acoes a,
+.acoes button {
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.acoes a.ver {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.acoes a.editar {
+    background-color: #ffc107;
+    color: black;
+}
+
+.acoes button.excluir {
+    background-color: #c82333;
+    color: white;
+}

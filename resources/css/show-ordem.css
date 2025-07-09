@@ -1,0 +1,41 @@
+/* Estilo para a visualização de Ordem de Serviço */
+.ordem-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 200px auto 2rem auto;
+    max-width: 800px;
+}
+
+.ordem-container h2 {
+    color: #004080;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #004080;
+    padding-bottom: 0.5rem;
+}
+
+.ordem-container p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.8rem;
+}
+
+.ordem-container p strong {
+    color: #004080;
+}
+
+.ordem-container .voltar-btn {
+    margin-top: 1.5rem;
+    display: inline-block;
+    background-color: #004080;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.ordem-container .voltar-btn:hover {
+    background-color: #002f5f;
+}

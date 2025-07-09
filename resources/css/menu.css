@@ -1,0 +1,91 @@
+.menu-nav {
+    position: fixed;
+    top: 50px; /* ajuste conforme altura do topo */
+    left: 0;
+    right: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004080;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Lado esquerdo com dropdowns */
+.menu-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.dropbtn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: calc(95% + 2px);
+    left: 0;
+    background-color: #0059b3;
+    min-width: 180px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    transform: translateY(-10px); /* começa levemente acima */
+    z-index: 1000;
+}
+
+.dropdown:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0); /* desliza suavemente para baixo */
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #002f5f;
+    color: orange;
+}
+
+/* Sair à direita */
+.menu-right {
+    display: flex;
+    align-items: center;
+}
+
+.menu-right button {
+    background: none;
+    border: 2px solid white;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.menu-right button:hover {
+    background-color: #002f5f;
+    color: orange;
+    border-color: orange;
+}
